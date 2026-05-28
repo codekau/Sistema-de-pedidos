@@ -7,45 +7,52 @@ public class Produto {
     private boolean disponibilidade;
 
     public Produto (String nome , double preço){
+        validarPreço(preço);
+        validarNome(nome);
+        this.preço = preço;                   
+        this.nome = nome.trim();
         this.id = contadorId++; // gera ID automático | id vai receber o valor do contador
-        setPreço(preço);                             // Após isso o contador será incrementado em 1
-        setNome(nome);
+        this.disponibilidade = true;                 // Após isso o contador será incrementado em
+    }
+
+    public void setPreço (double preço){
+        validarPreço(preço);
+        this.preço = preço;
+    }
+    public void setNome (String nome){   
+        validarNome(nome);
+        this.nome = nome.trim();
+    }
+    public void desativarDisponibilidade (){
+        this.disponibilidade = false;
+    }
+    public void ativarDisponibilidade (){
         this.disponibilidade = true;
     }
 
-    void setPreço (double preço){
-        if (preço > 0){
-            this.preço = preço;
-        }
-        else {
-            System.out.println("Preço inválido");
-        }
-    }
-    void setNome (String nome){   
-        if (nome != null && !nome.trim().isEmpty()){ //nome não pode ser nulo e nem coter apenas espaço
-            this.nome = nome;
-        }
-        else {
-            System.out.println("Nome inválido");
-        }
-    }
-    void setDisponibilidade (boolean disponibilidade){
-        this.disponibilidade = disponibilidade;
-    }
-
-    boolean isDisponibilidade(){
+    public boolean isDisponivel(){
         return this.disponibilidade;
     }
-    String getNome(){
+    public String getNome(){
         return this.nome;
     }
-    double getPreço(){
+    public double getPreço(){
         return this.preço;
     }
-    int getId(){
+    public int getId(){
         return this.id;
     }
-    void alterarDisponibilidade (){
+    public void alternarDisponibilidade (){
         this.disponibilidade = !this.disponibilidade;
+    }
+    private void validarPreço(double preço){
+        if (preço <= 0){
+            throw new IllegalArgumentException("Preço invalido");
+        }
+    }
+    private void validarNome(String nome){
+        if (nome == null || nome.trim().isEmpty()){ //Se nome for null ou conter apenas espaço
+            throw new IllegalArgumentException("Nome inválido");
+        }
     }
 }
