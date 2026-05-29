@@ -55,4 +55,22 @@ public class Produto {
             throw new IllegalArgumentException("Nome inválido");
         }
     }
+    @Override
+    public boolean equals(Object o) { 
+        if (this == o) return true; // mesmo objeto (referencia de memoria)
+
+        // Verifica se o objeto é nulo ou não é do tipo Produto
+        if (o == null || getClass() != o.getClass()) return false;
+
+        // Converte o objeto genérico (Object) para Produto
+        // Isso é necessário porque o método equals recebe qualquer tipo de objeto
+        Produto outro = (Produto) o;
+
+        // Compara os produtos pelo ID (considerando que ID é único)
+        return this.id == outro.id;
+    }
+    @Override    // GPT disse que sempre que mexer no equals precisa mexer nisso aqui
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
 }

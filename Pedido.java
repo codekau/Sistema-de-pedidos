@@ -2,35 +2,51 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido {
+    private static int contadorId = 1;
+    public enum StatusPedido {
+        ABERTO,
+        FECHADO,
+        CANCELADO
+    }
 
     private int id;
     private Mesa mesa;
     private List<ItemPedido> itens;
-    private String status;
+    private StatusPedido status;
 
     // Construtor
-    public Pedido(int id, Mesa mesa) {
-        this.id = id;
+    public Pedido(Mesa mesa) {
         this.mesa = mesa;
         this.itens = new ArrayList<>();
-        this.status = "ABERTO";
+        this.id = contadorId++;
+        this.status = StatusPedido.ABERTO;
     }
 
     // Adicionar item ao pedido
-    public void adicionarItem(ItemPedido item) {
-        this.itens.add(item);
+    public void adicionarItem(ItemPedido novoItem) {
+        validarPedidoAberto();
+        validarItem(novoItem);
+
+        for (ItemPedido item : itens) {
+            if (item.getProduto().equals(novoItem.getProduto())) {
+                item.setQuantidade(item.getQuantidade() + novoItem.getQuantidade());
+                return;
+            }
+        }
+        this.itens.add(novoItem);
     }
 
     // Remover item do pedido
-    public void removerItem(ItemPedido item) {
-        this.itens.remove(item);
+    public void removerItem(Produto produto) {
+        validarPedidoAberto();
+        itens.removeIf(item -> item.getProduto().equals(produto));
     }
 
     // Calcular o total do pedido
     public double calcularTotal() {
         double total = 0;
         for (ItemPedido item : itens) {
-            total += item.getSubtotal();
+            total += item.getSubTotal();
         }
         return total;
     }
@@ -41,14 +57,31 @@ public class Pedido {
     public Mesa getMesa(){
         return mesa;
     }
-    public List<ItemPedido> getItens(){
-        return itens;
-    }
-    public String getStatus(){
+    public StatusPedido getStatus() {
         return status;
     }
-    public void setStatus(String status){
-        this.status = status;
+    public List<ItemPedido> getItens(){
+        return new ArrayList<>(itens);
     }
-
+    
+    private void validarItem (ItemPedido novoItem){
+        if (novoItem == null) {
+            throw new IllegalArgumentException("Item inválido");
+        }
+    }
+    public void fecharPedido() {
+        if (itens.isEmpty()) {
+            throw new IllegalStateException("Pedido vazio");
+        }
+        this.status = StatusPedido.FECHADO;
+    }
+    public void cancelarPedido() {
+        validarPedidoAberto();
+        this.status = StatusPedido.CANCELADO;
+    }
+    private void validarPedidoAberto() {
+        if (status != StatusPedido.ABERTO) {
+            throw new IllegalStateException("Pedido não está aberto");
+        }
+    }
 }
