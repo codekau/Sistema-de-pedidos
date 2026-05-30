@@ -1,3 +1,4 @@
+package model;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,5 +87,8 @@ public class Pedido {
         if (status != StatusPedido.ABERTO) {
             throw new IllegalStateException("Pedido não está aberto");
         }
+    }
+    public Comanda getComanda(){
+        return comanda;
     }
 }

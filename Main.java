@@ -1,3 +1,9 @@
+import model.Comanda;
+import model.ItemPedido;
+import model.Mesa;
+import model.Pedido;
+import model.Produto;
+
 public class Main {
     public static void main(String[] args) {
 

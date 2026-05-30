@@ -1,3 +1,4 @@
+package model;
 public class Produto {
     private static int contadorId = 1; // compartilhado por todos
 

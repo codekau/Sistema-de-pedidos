@@ -1,3 +1,4 @@
+package model;
 public class Mesa{
     private static int contadorId = 1;
     public enum StatusMesa {

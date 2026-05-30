@@ -1,3 +1,4 @@
+package model;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +67,9 @@ public class Comanda {
 
     public Mesa getMesa() {
         return mesa;
+    }
+    public int getId (){
+        return this.id;
     }
     
 }
