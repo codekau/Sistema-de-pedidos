@@ -9,17 +9,20 @@ public class Pedido {
         CANCELADO
     }
 
+    private Comanda comanda;
     private int id;
     private Mesa mesa;
     private List<ItemPedido> itens;
     private StatusPedido status;
 
     // Construtor
-    public Pedido(Mesa mesa) {
+    public Pedido(Mesa mesa , Comanda comanda) {
         this.mesa = mesa;
         this.itens = new ArrayList<>();
         this.id = contadorId++;
         this.status = StatusPedido.ABERTO;
+        this.comanda = comanda;
+        comanda.adicionarPedido(this);
     }
 
     // Adicionar item ao pedido
