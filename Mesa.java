@@ -1,24 +1,76 @@
 public class Mesa{
+    private static int contadorId = 1;
+    public enum StatusMesa {
+        LIVRE,
+        OCUPADA,
+        RESERVADA,
+        INDISPONIVEL
+    }
+
     private int numero;
-    private String status;
-    public Mesa (int numero , String status){
-        setNumero(numero);
-        setStatus(status);
+    private StatusMesa status;
+    private final int id;
+
+
+    public Mesa (int numero){
+        validarNumero(numero);
+        this.numero = numero;
+        this.id = contadorId++;
+        this.status = StatusMesa.LIVRE;
     }
-    void setNumero (int numero){
-        if (numero > 0){
-            this.numero = numero;
+    public void mudarNumero (int numero){
+        if (!mesaEstaLivre()){
+            throw new IllegalStateException("Mesa não está livre");
         }
-        //codigo de erro
+        validarNumero(numero);
+        this.numero = numero;
     }
-    void setStatus (String status){   // Status pode ser algo como 3 opçoes de entrada no front: LIVRE , OCUPADA , INDISPONIVEL
-        this.status = status;         //ta faltando condição de validação
+    public void ocuparMesa(){
+        validarMesaLivre();
+        this.status = StatusMesa.OCUPADA;
     }
-    String getStatus(){
+    public void liberarMesa(){
+        if (this.status == StatusMesa.LIVRE){
+            throw new IllegalStateException("Mesa já está livre");
+        }
+        this.status = StatusMesa.LIVRE;
+    }
+    public void reservarMesa(){
+        validarMesaLivre();
+        this.status = StatusMesa.RESERVADA;
+    }
+    public void ocuparMesaReservada(){
+        if (status != StatusMesa.RESERVADA){
+            throw new IllegalStateException("Mesa não está reservada");
+        }
+        this.status = StatusMesa.OCUPADA;
+    }
+    public void indisponibilizarMesa(){
+        validarMesaLivre();
+        this.status = StatusMesa.INDISPONIVEL;
+    }
+
+    public StatusMesa getStatus(){
         return this.status;
     }
-    int getNumero(){
+    public int getNumero(){
         return this.numero;
+    }
+    public int getId(){
+        return this.id;
+    }
+    private void validarNumero(int numero){
+        if (numero <= 0){
+            throw new IllegalArgumentException("Número inválido");
+        }
+    }
+    public boolean mesaEstaLivre(){
+        return (this.status == StatusMesa.LIVRE) ;
+    }
+    private void validarMesaLivre(){
+        if (!mesaEstaLivre()){
+            throw new IllegalStateException("Mesa não está livre");
+        }
     }
 }
 
