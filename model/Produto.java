@@ -1,21 +1,23 @@
 package model;
 public class Produto {
-    private static int contadorId = 1; // compartilhado por todos
-
+    // CRIAÇÃO DAS VARIAVEIS
+    private static int contadorId = 1;
     private int id;
     private String nome;
     private double preço;
     private boolean disponibilidade;
 
+    // CONSTRUTOR COM VALIDAÇÃO E ID AUTOMATICO, SEMPRE INICIA PRODUTO COMO DISPONIVEL(TRUE)
     public Produto (String nome , double preço){
         validarPreço(preço);
         validarNome(nome);
         this.preço = preço;                   
-        this.nome = nome.trim();
-        this.id = contadorId++; // gera ID automático | id vai receber o valor do contador
-        this.disponibilidade = true;                 // Após isso o contador será incrementado em
+        this.nome = nome.trim(); // variavel this.nome recebe nome sem "espaços" no inicio e final
+        this.id = contadorId++; //Id recebe valor do contador e após isso o contador será incrementado em 1
+        this.disponibilidade = true;                 
     }
 
+    // SETTERS SIMPLES COM VALIDAÇÃO
     public void setPreço (double preço){
         validarPreço(preço);
         this.preço = preço;
@@ -24,6 +26,8 @@ public class Produto {
         validarNome(nome);
         this.nome = nome.trim();
     }
+
+    // METODO DE LIGA E DE DESLIGAR DISPONIBILIDADE
     public void desativarDisponibilidade (){
         this.disponibilidade = false;
     }
@@ -31,9 +35,17 @@ public class Produto {
         this.disponibilidade = true;
     }
 
+    // INVERTE A DISPONIBILIDADE, pensei em usa-lo em um botao de liga desliga da disponibilidade
+    public void alternarDisponibilidade (){
+        this.disponibilidade = !this.disponibilidade;
+    }
+
+    // VERIFICA SE ESTÁ DISPONIVEL E RETORNA TRUE SE ESTIVER
     public boolean isDisponivel(){
         return this.disponibilidade;
     }
+
+    // GETTERS SIMPLES
     public String getNome(){
         return this.nome;
     }
@@ -43,9 +55,8 @@ public class Produto {
     public int getId(){
         return this.id;
     }
-    public void alternarDisponibilidade (){
-        this.disponibilidade = !this.disponibilidade;
-    }
+
+    // VALIDAÇÕES PARA PREÇO E NOME, POSSUEM EXCEPTIONS
     private void validarPreço(double preço){
         if (preço <= 0){
             throw new IllegalArgumentException("Preço invalido");
@@ -56,6 +67,8 @@ public class Produto {
             throw new IllegalArgumentException("Nome inválido");
         }
     }
+
+    // ALTERAÇÃO NO METODO .EQUALS DO JAVA, estagiario que fez
     @Override
     public boolean equals(Object o) { 
         if (this == o) return true; // mesmo objeto (referencia de memoria)

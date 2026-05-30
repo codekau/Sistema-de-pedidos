@@ -3,20 +3,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pedido {
+    // CRIAÇÃO DAS VARIAVEIS
     private static int contadorId = 1;
     public enum StatusPedido {
         ABERTO,
         FECHADO,
         CANCELADO
     }
-
     private Comanda comanda;
     private int id;
     private Mesa mesa;
     private List<ItemPedido> itens;
     private StatusPedido status;
 
-    // Construtor
+    // CONSTRUTOR INICIANDO OBJETO COM STATUS ABERTO E ADCIONANDO O OBJETO NA COMANDA 
     public Pedido(Mesa mesa , Comanda comanda) {
         this.mesa = mesa;
         this.itens = new ArrayList<>();
@@ -26,35 +26,35 @@ public class Pedido {
         comanda.adicionarPedido(this);
     }
 
-    // Adicionar item ao pedido
+    // ADICIONAR ITEM AO PEDIDO , SE O ITEM JA EXISTIR NO PEDIDO ELE SOMA A QUANTIDADE DELES
     public void adicionarItem(ItemPedido novoItem) {
         validarPedidoAberto();
         validarItem(novoItem);
-
-        for (ItemPedido item : itens) {
-            if (item.getProduto().equals(novoItem.getProduto())) {
-                item.setQuantidade(item.getQuantidade() + novoItem.getQuantidade());
+        for (ItemPedido item : itens) {         
+            if (item.getProduto().equals(novoItem.getProduto())) {  // se o item ja existir no pedido
+                item.setQuantidade(item.getQuantidade() + novoItem.getQuantidade()); // soma das quantidades
                 return;
             }
         }
         this.itens.add(novoItem);
     }
 
-    // Remover item do pedido
+    // REMOVER ITEM DO PEDIDO
     public void removerItem(Produto produto) {
         validarPedidoAberto();
         itens.removeIf(item -> item.getProduto().equals(produto));
     }
 
-    // Calcular o total do pedido
+    // CALCULAR TOTAL DO PEDIDO
     public double calcularTotal() {
         double total = 0;
-        for (ItemPedido item : itens) {
+        for (ItemPedido item : itens) {  // Passa por todo os item da lista itens
             total += item.getSubTotal();
         }
         return total;
     }
-    // Getters e Setters
+
+    // GETTERS SIMPLES
     public int getId(){
         return id;
     }
@@ -67,13 +67,13 @@ public class Pedido {
     public List<ItemPedido> getItens(){
         return new ArrayList<>(itens);
     }
-    
-    private void validarItem (ItemPedido novoItem){
-        if (novoItem == null) {
-            throw new IllegalArgumentException("Item inválido");
-        }
+    public Comanda getComanda(){
+        return comanda;
     }
+    
+    // FECHAMENTO E CANCELAMENTO DE PEDIDO
     public void fecharPedido() {
+        validarPedidoAberto();
         if (itens.isEmpty()) {
             throw new IllegalStateException("Pedido vazio");
         }
@@ -83,12 +83,16 @@ public class Pedido {
         validarPedidoAberto();
         this.status = StatusPedido.CANCELADO;
     }
-    private void validarPedidoAberto() {
-        if (status != StatusPedido.ABERTO) {
-            throw new IllegalStateException("Pedido não está aberto");
+
+    // VALIDAÇÕES DE ITEMPEDIDO E SE O SE O PEDIDO ESTA ABERTO
+    private void validarItem (ItemPedido novoItem){
+        if (novoItem == null) {
+            throw new IllegalArgumentException("Item inválido");
         }
     }
-    public Comanda getComanda(){
-        return comanda;
+    private void validarPedidoAberto() {
+        if (status != StatusPedido.ABERTO) {  //sempre que o status for diferente de aberto da Exception
+            throw new IllegalStateException("Pedido não está aberto");
+        }
     }
 }
