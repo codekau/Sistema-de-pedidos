@@ -36,14 +36,16 @@ public class Mesa{
     }
 
     // METODOS PARA ALTERAR O STATUS DA MESA APÓS VALIDAÇÃO, MAIORIA COM EXCEPTIONS
-    public void ocuparMesa(){
+    public void ocuparMesa(Comanda comanda){
         validarMesaLivre();
+        this.comanda = comanda;
         this.status = StatusMesa.OCUPADA;
     }
     public void liberarMesa(){
         if (this.status == StatusMesa.LIVRE){
             throw new IllegalStateException("Mesa já está livre");
         }
+        this.comanda = null;
         this.status = StatusMesa.LIVRE;
     }
     public void reservarMesa(){
@@ -74,6 +76,12 @@ public class Mesa{
     public int getId(){
         return this.id;
     }
+    public Comanda getComanda(){
+        if (this.comanda == null) {
+            throw new IllegalStateException("Mesa não possui comanda");
+        }
+        return this.comanda;
+    }
     
     // RETORNA TRUE SEMPRE QUE MESA FOR LIVRE
     public boolean mesaEstaLivre(){
@@ -96,22 +104,6 @@ public class Mesa{
         if (!mesaEstaLivre()){
             throw new IllegalStateException("Mesa não está livre");
         }
-    }
-
-    //ALTERAÇÕES NA COMANDA VINCULADA
-    public void abrirComanda() {
-        validarMesaLivre();
-        this.comanda = new Comanda(this);
-        this.status = StatusMesa.OCUPADA;
-    }
-
-    public void fecharComanda() {
-        if (this.comanda == null) {
-            throw new IllegalStateException("Mesa não possui comanda");
-        }
-        this.comanda.fecharComanda();
-        this.comanda = null;
-        this.status = StatusMesa.LIVRE;
     }
 }
 

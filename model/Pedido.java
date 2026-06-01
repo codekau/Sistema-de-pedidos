@@ -12,13 +12,11 @@ public class Pedido {
     }
     private Comanda comanda;
     private int id;
-    private Mesa mesa;
     private List<ItemPedido> itens;
     private StatusPedido status;
 
     // CONSTRUTOR INICIANDO OBJETO COM STATUS ABERTO E ADCIONANDO O OBJETO NA COMANDA 
-    public Pedido(Mesa mesa , Comanda comanda) {
-        this.mesa = mesa;
+    public Pedido(Comanda comanda) {
         this.itens = new ArrayList<>();
         this.id = contadorId++;
         this.status = StatusPedido.ABERTO;
@@ -56,19 +54,19 @@ public class Pedido {
 
     // GETTERS SIMPLES
     public int getId(){
-        return id;
+        return this.id;
     }
-    public Mesa getMesa(){
-        return mesa;
+    public Mesa getMesaDoPedido(){
+        return this.comanda.getMesa();
     }
     public StatusPedido getStatus() {
-        return status;
+        return this.status;
     }
     public List<ItemPedido> getItens(){
         return new ArrayList<>(itens);
     }
     public Comanda getComanda(){
-        return comanda;
+        return this.comanda;
     }
     
     // FECHAMENTO E CANCELAMENTO DE PEDIDO
