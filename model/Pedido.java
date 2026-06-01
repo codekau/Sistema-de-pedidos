@@ -14,14 +14,16 @@ public class Pedido {
     private int id;
     private List<ItemPedido> itens;
     private StatusPedido status;
+    private String observacao;
 
     // CONSTRUTOR INICIANDO OBJETO COM STATUS ABERTO E ADCIONANDO O OBJETO NA COMANDA 
-    public Pedido(Comanda comanda) {
+    public Pedido(Comanda comanda , String observacao) {
         this.itens = new ArrayList<>();
         this.id = contadorId++;
         this.status = StatusPedido.ABERTO;
+        this.observacao = observacao;
         this.comanda = comanda;
-        comanda.adicionarPedido(this);
+        this.comanda.adicionarPedido(this);
     }
 
     // ADICIONAR ITEM AO PEDIDO , SE O ITEM JA EXISTIR NO PEDIDO ELE SOMA A QUANTIDADE DELES
@@ -67,6 +69,9 @@ public class Pedido {
     }
     public Comanda getComanda(){
         return this.comanda;
+    }
+    public String getObservacao(){
+        return observacao;
     }
     
     // FECHAMENTO E CANCELAMENTO DE PEDIDO
