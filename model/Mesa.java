@@ -14,11 +14,14 @@ public class Mesa{
     private int numero;
     private StatusMesa status;
     private final int id;
+    private int capacidade;
+    private Comanda comanda;
 
     // CONSTRUTOR GERANDO ID AUTOMATICO E INICIANDO COM STATUS DE LIVRE
-    public Mesa (int numero){
+    public Mesa (int numero , int capacidade){
         validarNumero(numero);
         this.numero = numero;
+        this.capacidade = capacidade;
         this.id = contadorId++;
         this.status = StatusMesa.LIVRE;
     }
@@ -33,14 +36,16 @@ public class Mesa{
     }
 
     // METODOS PARA ALTERAR O STATUS DA MESA APÓS VALIDAÇÃO, MAIORIA COM EXCEPTIONS
-    public void ocuparMesa(){
+    public void ocuparMesa(Comanda comanda){
         validarMesaLivre();
+        this.comanda = comanda;
         this.status = StatusMesa.OCUPADA;
     }
     public void liberarMesa(){
         if (this.status == StatusMesa.LIVRE){
             throw new IllegalStateException("Mesa já está livre");
         }
+        this.comanda = null;
         this.status = StatusMesa.LIVRE;
     }
     public void reservarMesa(){
@@ -59,6 +64,9 @@ public class Mesa{
     }
 
     // GETTERS SIMPLES
+    public int getCapacidade(){
+        return this.capacidade;
+    }
     public StatusMesa getStatus(){
         return this.status;
     }
@@ -68,10 +76,22 @@ public class Mesa{
     public int getId(){
         return this.id;
     }
+    public Comanda getComanda(){
+        if (this.comanda == null) {
+            throw new IllegalStateException("Mesa não possui comanda");
+        }
+        return this.comanda;
+    }
     
     // RETORNA TRUE SEMPRE QUE MESA FOR LIVRE
     public boolean mesaEstaLivre(){
         return (this.status == StatusMesa.LIVRE) ;
+    }
+
+    //MODIFICADOR DE CAPACIDADE (caso precise editar apos a criação)
+    public void modificarCapacidade(int capacidade){
+        validarNumero(capacidade);
+        this.capacidade = capacidade;
     }
     
     // VALIDAÇÕES PARA NUMERO E MESA LIVRE, POSSUEM EXCEPTIONS

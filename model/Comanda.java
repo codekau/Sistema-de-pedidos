@@ -23,6 +23,7 @@ public class Comanda {
         this.pedidos = new ArrayList<>();
         this.id = contadorId++;
         this.status = StatusComanda.ABERTA;
+        this.mesa.ocuparMesa(this);
     }
 
     // ADICIONAR PEDIDO A LISTA DE PEDIDOS DA COMANDA, APENAS SE A COMANDA ESTIVER ABERTA
@@ -43,6 +44,7 @@ public class Comanda {
     public void fecharComanda(){
         validarComandaAberta();
         this.status = StatusComanda.FECHADA;
+        this.mesa.liberarMesa();
     }
 
     // VERIFICA SE A COMANDA ESTÁ ABERTA, RESULTARA EM EXCEPTION CASO CONTRARIO
@@ -53,10 +55,12 @@ public class Comanda {
     }
 
     //VINCULANDO A COMANDA A OUTRA MESA
-    public void mudarMesaVinculada (Mesa mesa){
+    public void mudarMesaVinculada (Mesa novaMesa){
         validarComandaAberta();                  //Verifica se a comanda está aberta
-        if (mesa.mesaEstaLivre()){               //Se a mesa tiver livre vai retornar true
-            this.mesa = mesa;
+        if (novaMesa.mesaEstaLivre()){               //Se a mesa tiver livre vai retornar true
+            this.mesa.liberarMesa();
+            this.mesa = novaMesa;
+            this.mesa.ocuparMesa(this);
         }
         else {
             throw new IllegalStateException("Mesa não está livre");
