@@ -59,3 +59,48 @@ SIDEBAR
 }
 
 /* links menu */
+
+.menu a {
+    display: block;
+
+    text-decoration: none;
+    color: #222;
+
+    padding: 12px;
+    border-radius: 8px;
+
+    transition: 0.2s;
+}
+
+/* hover menu */
+
+.menu a:hover {
+  background-color: #f0f0f0;
+}
+
+
+/* item ativo */
+
+.menu .active a {
+  background-color: #ececec;
+  font-weight: bold;
+}
+
+
+/* botão sair */
+
+.logout-btn {
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+
+  background-color: #222;
+  color: white;
+
+  cursor: pointer;
+}
+
+/* =========================
+MAIN CONTENT
+========================= */
+
