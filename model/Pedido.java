@@ -14,14 +14,13 @@ public class Pedido {
     private int id;
     private List<ItemPedido> itens;
     private StatusPedido status;
-    private String observacao;
+    private String observacao = "S/O";   //  S/O == Sem Observação
 
     // CONSTRUTOR INICIANDO OBJETO COM STATUS ABERTO E ADCIONANDO O OBJETO NA COMANDA 
-    public Pedido(Comanda comanda , String observacao) {
+    public Pedido(Comanda comanda) {
         this.itens = new ArrayList<>();
         this.id = contadorId++;
         this.status = StatusPedido.ABERTO;
-        this.observacao = observacao;
         this.comanda = comanda;
         this.comanda.adicionarPedido(this);
     }
@@ -54,6 +53,13 @@ public class Pedido {
         return total;
     }
 
+    //ADCICIONAR DESCRIÇÃO AO PEDIDO    (não precisa de exception)
+    public void adicionarDescrição(String observacao){
+        if ( observacao.trim().length() > 0){
+            this.observacao = observacao;
+        }
+    }
+    
     // GETTERS SIMPLES
     public int getId(){
         return this.id;
